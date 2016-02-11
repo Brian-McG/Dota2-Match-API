@@ -3,9 +3,10 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template
+from flask import render_template, jsonify
 from MatchAPI_Dota2 import app
 from MatchAPI_Dota2 import match_controller
+
 
 @app.route('/')
 @app.route('/home')
@@ -40,7 +41,4 @@ def about():
 @app.route('/match_api')
 def match_api():
     """Json of current and upcoming games"""
-    return render_template(
-        'matches.json',
-        json_block=match_controller.list_of_matches
-    )
+    return jsonify(match_controller.list_of_matches)
