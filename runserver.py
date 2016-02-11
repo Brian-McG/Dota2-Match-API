@@ -14,6 +14,4 @@ if __name__ == "__main__":
         PORT = int(environ.get('SERVER_PORT', DEFAULT_PORT))
     except ValueError:
         PORT = DEFAULT_PORT
-    if PORT == DEFAULT_PORT:
-        app.debug = True
     app.run(HOST, PORT)
