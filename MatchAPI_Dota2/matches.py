@@ -1,12 +1,10 @@
-﻿import ast
-import json
-import traceback
+﻿import json
+import logging
 from urllib.error import URLError
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from urllib.request import urlopen
-
-from .common import log
+from time import sleep
 
 
 class Matches:
@@ -29,11 +27,12 @@ class Matches:
             try:
                 response = urlopen(self.REQUEST_URL)
                 self.list_of_matches = json.loads(response.read().decode("utf-8"))
-                log("Successfully retrieved match log")
+                logging.info("Successfully retrieved match log")
                 error_free = True
             except URLError as e:
-                log("Failed to obtain latest match schedule, sleeping {0} seconds:\n{2}".format(self.SLEEP_TIME, e))
-                traceback.print_tb(e.__traceback__)
+                logging.exception("Failed to obtain latest match schedule, sleeping {0} seconds:\n{2}".format(self.SLEEP_TIME, e))
+                sleep(self.SLEEP_TIME)
+                attempt += 1
 
     def start(self):
         """Starts the match retriever"""
